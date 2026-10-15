@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Discord botu ve web sitesi yapımı. Net fiyat, hızlı teslim, iletişim Discord'dan.">
+<meta name="theme-color" content="#0f1115">
+<title>Kodatölye | Discord Botu ve Web Sitesi Yapımı</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#eceef3;--mut:#9aa3b2;--acc:#7c8cff;--acc2:#ff6fae;--ok:#4ade80}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:5;background:rgba(15,17,21,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:800;font-size:20px;text-decoration:none;letter-spacing:-.5px}
+.logo b{color:var(--acc)}
+nav a{color:var(--mut);text-decoration:none;margin-left:22px;font-size:15px}
+nav a:hover{color:var(--txt)}
+.btn{display:inline-block;background:linear-gradient(135deg,var(--acc),#5865f2);color:#fff;text-decoration:none;font-weight:700;padding:13px 22px;border-radius:10px;border:0;cursor:pointer;font-size:16px}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
+.hero{padding:84px 0 64px}
+.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.08;margin:0 0 18px;letter-spacing:-1.5px;max-width:760px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);font-size:19px;max-width:600px;margin:0 0 28px}
+.hero .row{display:flex;gap:12px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:34px}
+.chip{border:1px solid var(--line);color:var(--mut);padding:6px 12px;border-radius:99px;font-size:14px}
+section{padding:60px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(26px,4vw,36px);margin:0 0 8px;letter-spacing:-.8px}
+.lead{color:var(--mut);margin:0 0 32px;max-width:620px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.card h3{margin:0 0 6px;font-size:20px}
+.card p{color:var(--mut);margin:0 0 14px}
+.card ul{list-style:none;padding:0;margin:0 0 16px}
+.card li{padding:5px 0 5px 26px;position:relative;font-size:15px}
+.card li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:700}
+.price{font-size:32px;font-weight:800;letter-spacing:-1px}
+.price small{font-size:14px;color:var(--mut);font-weight:500;letter-spacing:0}
+.card.hot{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
+.tag{display:inline-block;font-size:12px;background:var(--acc);color:#0b0d12;font-weight:700;padding:2px 9px;border-radius:99px;margin-bottom:10px}
+.steps{counter-reset:s;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--acc);color:#0b0d12;font-weight:800;margin-bottom:10px}
+.step b{display:block;margin-bottom:4px}
+.step span{color:var(--mut);font-size:15px}
+.work .card h3 span{font-size:12px;color:var(--mut);font-weight:500;margin-left:6px}
+.cta{text-align:center}
+.cta .box{background:linear-gradient(135deg,#1b1f33,#2a1b2e);border:1px solid var(--line);border-radius:20px;padding:48px 24px}
+.cta p{color:var(--mut);max-width:520px;margin:0 auto 24px}
+.user{font:700 18px ui-monospace,Consolas,monospace;background:#0b0d12;border:1px solid var(--line);padding:10px 16px;border-radius:10px;display:inline-block;margin:0 6px 12px;cursor:pointer}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--mut);margin:10px 0 0}
+footer{padding:30px 0;border-top:1px solid var(--line);color:var(--mut);font-size:14px;text-align:center}
+@media(max-width:640px){nav a:not(.keep){display:none}.hero{padding:56px 0 44px}section{padding:44px 0}}
+
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(600px 400px at 85% -5%,rgba(124,140,255,.18),transparent),radial-gradient(500px 380px at 0% 30%,rgba(255,111,174,.10),transparent)}
+.card{transition:transform .2s,border-color .2s}.card:hover{transform:translateY(-3px);border-color:#3a4256}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
+.kicker{color:var(--acc);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.proj{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+@media(min-width:900px){.proj{grid-template-columns:repeat(2,1fr)}}
+.proj .card{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.proj .body{padding:20px 22px 24px}
+.mock{background:#0b0d12;border-bottom:1px solid var(--line);padding:16px;min-height:190px;font-size:13px}
+.tagl{display:inline-block;font-size:11px;font-weight:700;color:var(--acc);border:1px solid var(--acc);border-radius:99px;padding:1px 8px;margin-left:6px;vertical-align:middle}
+.ch{display:flex;gap:6px;color:var(--mut);padding:3px 8px;border-radius:6px}
+.ch.on{background:#1d2230;color:var(--txt)}.cat{color:#6b7488;font-size:11px;font-weight:700;margin:8px 0 2px;letter-spacing:.06em}
+.msg{display:flex;gap:10px;margin:8px 0}.av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));flex:none}
+.msg b{font-size:13px}.msg small{color:var(--mut)}.embed{border-left:3px solid var(--acc);background:#14171f;padding:8px 10px;border-radius:4px;margin-top:4px}
+.cmd{background:#14171f;border:1px solid var(--line);padding:3px 8px;border-radius:6px;font-family:ui-monospace,Consolas,monospace;color:#c9d0ff}
+.bar{height:8px;border-radius:4px;background:#1d2230;margin:6px 0}.bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.br{border:1px solid var(--line);border-radius:8px;overflow:hidden}.br .top{background:#14171f;padding:6px 10px;display:flex;gap:5px}.br .top i{width:8px;height:8px;border-radius:50%;background:#2b3140}
+.br .pg{padding:14px}.br h4{margin:0 0 6px;font-size:16px}.pill{display:inline-block;background:var(--acc);color:#0b0d12;font-weight:700;font-size:11px;padding:3px 9px;border-radius:99px;margin-top:6px}
+.sk{height:6px;border-radius:3px;background:#1d2230;margin:5px 0}
+.strip{display:flex;gap:28px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.strip div b{display:block;font-size:22px;letter-spacing:-.5px}.strip div span{color:var(--mut);font-size:14px}
+</style>
+<noscript><style>.rv{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="logo" href="#"><b>Kod</b>atölye</a>
+  <nav><a href="#hizmetler">Hizmetler</a><a href="#fiyat">Fiyatlar</a><a href="#isler">Örnekler</a><a href="#sss">SSS</a><a class="keep" href="#iletisim">İletişim</a></nav>
+</div></header>
+
+<main>
+<div class="wrap hero">
+  <h1>Sunucuna <em>bot</em>, işine <em>site</em> yapıyorum.</h1>
+  <p>Discord botu ve web sitesi yazıyorum. Fiyat başta belli, teslim süresi başta belli, sürpriz yok.</p>
+  <div class="row"><a class="btn" href="#iletisim">Discord'dan yaz</a><a class="btn ghost" href="#fiyat">Fiyatlara bak</a></div>
+  <div class="chips"><span class="chip">Discord botu</span><span class="chip">Tek sayfa site</span><span class="chip">Çok sayfalı site</span><span class="chip">Sunucu kurulumu</span></div>
+</div>
+
+<section id="hizmetler"><div class="wrap">
+  <h2>Ne yapıyorum?</h2>
+  <p class="lead">İhtiyacını söyle, ona göre yazayım. Hazır paket işine yaramazsa özel yazarım.</p>
+  <div class="grid">
+    <div class="card"><h3>🤖 Discord botu</h3><p>Sunucunu kendi kendine yönetsin.</p>
+      <ul><li>Kanal ve rol otomatik kurulumu</li><li>Hoş geldin mesajı, otomatik rol</li><li>Seviye / XP, çekiliş, anket</li><li>Moderasyon komutları</li><li>Ticket (destek bileti) sistemi</li></ul></div>
+    <div class="card"><h3>🌐 Web sitesi</h3><p>Seni ya da işini tanıtan temiz bir site.</p>
+      <ul><li>Telefonda da düzgün çalışır</li><li>Hızlı ve sade tasarım</li><li>İletişim butonları, harita, sosyal medya</li><li>İstersen ücretsiz yayına almasını kurarım</li></ul></div>
+    <div class="card"><h3>🛠️ Sunucu kurulumu</h3><p>Sıfırdan düzenli bir Discord sunucusu.</p>
+      <ul><li>Kategori, kanal, izin düzeni</li><li>Rol sistemi</li><li>Kurallar ve karşılama</li></ul></div>
+  </div>
+</div></section>
+
+<section id="fiyat"><div class="wrap">
+  <h2>Fiyatlar</h2>
+  <p class="lead">Başlangıç fiyatları. İş büyüdükçe fiyat değişir, yazmadan önce net rakamı söylerim.</p>
+  <div class="grid">
+    <div class="card"><h3>Discord botu</h3><div class="price">400 ₺ <small>başlangıç</small></div><p>Temel özellikli bot. Özellik eklendikçe fiyat belirlenir.</p>
+      <ul><li>Seçtiğin özellikler</li><li>Kurulum yardımı</li><li>Teslimden sonra hata düzeltme</li></ul><a class="btn ghost" href="#iletisim">Sipariş ver</a></div>
+    <div class="card hot"><span class="tag">En çok istenen</span><h3>Tek sayfa site</h3><div class="price">2.000 ₺ <small>başlangıç</small></div><p>Kendini ya da işini tanıtan tek sayfalık site.</p>
+      <ul><li>Özel tasarım</li><li>Mobil uyumlu</li><li>İletişim bölümü</li><li>Yayına alma desteği</li></ul><a class="btn" href="#iletisim">Sipariş ver</a></div>
+    <div class="card"><h3>Çok sayfalı site</h3><div class="price">4.000 ₺ <small>başlangıç</small></div><p>Birkaç sayfalı tanıtım ya da portfolyo sitesi.</p>
+      <ul><li>5 sayfaya kadar</li><li>Özel tasarım, mobil uyumlu</li><li>Basit iletişim formu</li></ul><a class="btn ghost" href="#iletisim">Sipariş ver</a></div>
+  </div>
+</div></section>
+
+<section id="isler"><div class="wrap">
+  <div class="kicker">Örnek projeler</div>
+  <h2>Neler yapabilirim?</h2>
+  <p class="lead">Aşağıdakiler örnek çalışmalardır, ne alacağını görmen için. Senin işin için aynısını ya da tamamen özelini yazarım.</p>
+  <div class="proj">
+    <div class="card rv"><div class="mock">
+      <div class="cat">⌄ BİLGİ</div><div class="ch">📌 kurallar</div><div class="ch">📢 duyurular</div>
+      <div class="cat">⌄ SOHBET</div><div class="ch on"># genel</div><div class="ch"># medya</div>
+      <div class="cat">⌄ SESLİ</div><div class="ch">🔊 Genel Ses</div><div class="ch">🔊 Oyun 1</div></div>
+      <div class="body"><h3>Sunucu kurulum botu <span class="tagl">hazır</span></h3><p>Tek komutla kategori, kanal, rol ve kuralları kurar. Sunucuyu elle ayarlamakla uğraşmazsın.</p>
+      <ul><li>Kanallar ve izinler otomatik</li><li>Roller, kurallar, hoş geldin kanalı</li><li>Plan sana göre değiştirilir</li></ul></div></div>
+    <div class="card rv"><div class="mock">
+      <div class="msg"><div class="av"></div><div><b>Ayşe</b> <small>kullandı</small> <span class="cmd">/seviye</span>
+      <div class="embed"><b>Seviye 7</b><div class="bar"><i style="width:64%"></i></div><small>640 / 1000 XP</small></div></div></div>
+      <div class="msg"><div class="av" style="background:linear-gradient(135deg,#4ade80,#38bdf8)"></div><div><b>Bot</b> <small>🎉</small><div>Tebrikler <b>Ali</b>, seviye 5 oldun!</div></div></div></div>
+      <div class="body"><h3>Seviye ve ödül botu <span class="tagl">örnek</span></h3><p>Üyeler yazdıkça XP kazanır, seviye atlayınca rol ödülü alır. Sunucuyu canlı tutar.</p>
+      <ul><li>XP, seviye, sıralama tablosu</li><li>Seviyeye göre otomatik rol</li><li>Çekiliş ve anket komutları</li></ul></div></div>
+    <div class="card rv"><div class="mock"><div class="br"><div class="top"><i></i><i></i><i></i></div><div class="pg">
+      <h4>Mavi Kafe</h4><div class="sk" style="width:80%"></div><div class="sk" style="width:60%"></div><span class="pill">Rezervasyon</span>
+      <div style="display:flex;gap:6px;margin-top:12px"><div class="sk" style="height:34px;flex:1"></div><div class="sk" style="height:34px;flex:1"></div><div class="sk" style="height:34px;flex:1"></div></div></div></div></div>
+      <div class="body"><h3>Tanıtım sitesi <span class="tagl">örnek</span></h3><p>İşletmen, kendin ya da topluluğun için temiz, hızlı ve telefonda düzgün bir site.</p>
+      <ul><li>Özel tasarım, mobil uyumlu</li><li>İletişim ve sosyal medya butonları</li><li>Ücretsiz yayına almasını kurarım</li></ul></div></div>
+    <div class="card rv"><div class="mock">
+      <div class="msg"><div class="av"></div><div><b>Mehmet</b><div>Yardım lazım, rolüm gelmedi</div></div></div>
+      <div class="msg"><div class="av" style="background:linear-gradient(135deg,#4ade80,#38bdf8)"></div><div><b>Bot</b><div class="embed"><b>🎫 Destek talebi #0042</b><br><small>Yetkililer bu kanalda yardımcı olacak.</small><div style="margin-top:6px"><span class="cmd">Talebi kapat</span></div></div></div></div></div>
+      <div class="body"><h3>Ticket (destek) botu <span class="tagl">örnek</span></h3><p>Üye tek tuşla özel destek kanalı açar, yetkililer çözer, kayıt tutulur.</p>
+      <ul><li>Butonla talep açma</li><li>Yetkili rolüne özel kanal</li><li>Kapatınca kayıt (log)</li></ul></div></div>
+  </div>
+  <div class="strip rv"><div><b>400 ₺'den</b><span>bot fiyatı</span></div><div><b>Net fiyat</b><span>yazmadan önce söylenir</span></div><div><b>Kaynak kod</b><span>teslimde sende</span></div><div><b>Discord</b><span>tüm iletişim buradan</span></div></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Nasıl çalışıyoruz?</h2>
+  <p class="lead">Dört adım, hepsi Discord'dan.</p>
+  <div class="steps">
+    <div class="step"><b>Yaz</b><span>Ne istediğini Discord'dan anlat.</span></div>
+    <div class="step"><b>Fiyat + süre</b><span>Net rakamı ve teslim süresini söylerim.</span></div>
+    <div class="step"><b>Yaparım</b><span>Gelişmeyi sana gösteririm, beğenmediğin yeri düzeltirim.</span></div>
+    <div class="step"><b>Teslim</b><span>Kurulumu yaparım, çalıştığını birlikte kontrol ederiz.</span></div>
+  </div>
+</div></section>
+
+<section id="sss"><div class="wrap">
+  <h2>Sık sorulanlar</h2><p class="lead"></p>
+  <details><summary>Ödeme nasıl oluyor?</summary><p>Sipariş öncesi konuşup anlaşırız. İstersen itemsatis ya da hesap.com.tr gibi aracı bir platform üzerinden de yapabiliriz.</p></details>
+  <details><summary>Ne kadar sürede teslim olur?</summary><p>Basit bot 1-2 gün, tek sayfa site 2-4 gün. Kesin süreyi işi görünce söylerim.</p></details>
+  <details><summary>Bot 7/24 çalışır mı?</summary><p>Bot, çalıştığı bilgisayar ya da sunucu açıkken çalışır. 7/24 için barındırma (hosting) gerekir, nasıl yapılacağını anlatırım.</p></details>
+  <details><summary>Beğenmezsem ne olur?</summary><p>Anlaştığımız kapsamda istediğin düzeltmeleri yaparım. Kapsam dışı ekleme istersen yeni fiyat konuşuruz.</p></details>
+  <details><summary>Kaynak kodu bana verilir mi?</summary><p>Evet, teslimde dosyalar sende olur.</p></details>
+</div></section>
+
+<section id="iletisim" class="cta"><div class="wrap"><div class="box">
+  <h2>Hadi konuşalım</h2>
+  <p>Discord'dan arkadaşlık isteği at ya da sunucuya gel, ne istediğini yaz. Genelde aynı gün dönerim.</p>
+  <div><span class="user" id="du" title="Kopyala">@DISCORD_KULLANICI_ADIN</span></div>
+  <div><a class="btn" id="dinv" href="#">Discord sunucuma katıl</a></div>
+</div></div></section>
+</main>
+<footer><div class="wrap">© <span id="yr"></span> Kodatölye</div></footer>
+
+<script>
+// ---- BURAYI DEĞİŞTİR ----
+var DISCORD_USER = 'bey_ata';
+var DISCORD_INVITE = 'https://discord.gg/NxmzcpT8W';   // örn: https://discord.gg/abcdef  (boşsa buton gizlenir)
+// -------------------------
+document.getElementById('du').textContent = '@' + DISCORD_USER;
+var inv = document.getElementById('dinv');
+if (DISCORD_INVITE) inv.href = DISCORD_INVITE; else inv.style.display = 'none';
+document.getElementById('yr').textContent = new Date().getFullYear();
+document.getElementById('du').onclick = function () {
+  try { navigator.clipboard.writeText(DISCORD_USER); this.textContent = 'Kopyalandı ✓'; var t = this; setTimeout(function () { t.textContent = '@' + DISCORD_USER; }, 1500); } catch (e) {}
+};
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+</script>
+</body>
+</html>
